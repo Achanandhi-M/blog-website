@@ -21,14 +21,22 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install LHCI
-        run: npm install -g @lhci/cli
+      - name: Install dependencies
+        run: npm install
 
-      - name: Run LHCI on production site
+      - name: Build Next.js application
+        env:
+          WORDPRESS_API_URL: "https://wp.keploy.io/graphql"
+          NEXT_PUBLIC_WORDPRESS_API_URL: "https://wp.keploy.io/graphql"
+        run: npm run build
+
+      - name: Start Next.js app (SSR)
+        env:
+          WORDPRESS_API_URL: "https://wp.keploy.io/graphql"
+          NEXT_PUBLIC_WORDPRESS_API_URL: "https://wp.keploy.io/graphql"
         run: |
-          mkdir -p lhci-reports/keploy.io
-          lhci autorun --collect.url="https://www.keploy.io/blog" --upload.outputDir="./lhci-reports/keploy.io"
-          echo "MAIN_SCORE=$(jq '.categories.performance.score * 100' ./lhci-reports/keploy.io/*.report.json)" >> $GITHUB_ENV
+          npm run start &
+          sleep 10
 
       - name: Install Lighthouse CI CLI
         run: npm install -g @lhci/cli
@@ -75,12 +83,13 @@ jobs:
       - name: Install LHCI
         run: npm install -g @lhci/cli
 
-
-      - name: Run LHCI on PR branch
+      - name: Run LHCI on PR and save score
         run: |
-          mkdir -p lhci-reports/pr
-          lhci autorun --collect.url="http://localhost:3000" --upload.outputDir="./lhci-reports/pr"
-          echo "PR_SCORE=$(jq '.categories.performance.score * 100' ./lhci-reports/pr/*.report.json)" >> $GITHUB_ENV
+          lhci autorun \
+            --collect.url="http://localhost:3000/blog" \
+            --upload.target=temporary-public-storage
+
+          echo "PR_SCORE=$(jq '.categories.performance.score * 100' .lighthouseci/*.report.json)" >> $GITHUB_ENV
 
       - name: Run LHCI on PR and save score
         run: |
