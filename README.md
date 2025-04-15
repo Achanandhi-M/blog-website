@@ -63,7 +63,7 @@ Your .env.local file should look like this
 WORDPRESS_API_URL=...
 ```
 
-### Step 6. Run Next.js in development mode
+### Step 6. Run next.js in development mode
 ```bash
 npm run dev
 
