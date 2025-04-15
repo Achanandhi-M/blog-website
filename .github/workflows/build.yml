@@ -90,4 +90,5 @@ jobs:
       - name: Print both scores
         run: |
           echo "Main branch performance score: $MAIN_SCORE"
+          
           echo "PR branch performance score: $PR_SCORE"
