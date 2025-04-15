@@ -23,7 +23,7 @@ Inside your WordPress admin, go to **Posts** and start adding new posts:
 
 - We recommend creating at least **2 posts**
 - Use dummy data for the content
-- Pick an author from your WordPress users
+- Pick an author from your WordPress user
 - Add a **Featured Image**. You can download one from [Unsplash](https://unsplash.com/)
 - Fill the **Excerpt** field
 
