@@ -15,7 +15,7 @@ Once the site is ready, you'll need to install the [WPGraphQL](https://www.wpgra
 
 #### GraphQL
 
-The [WPGraphQL](https://www.wpgraphql.com/) plugin also gives you access to a GraphQL IDE directly from your WordPress Admin, allowing you to inspect and play around with the GraphQL API.
+The [WPGraphQL](https://www.wpgraphql.com/) plugin also gives you access to a GraphQL IDE directly from your WordPress Admin, allowing you to inspect and play around with the GraphQL APIs.
 
 ### Step 2. Populate Content
 
