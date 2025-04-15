@@ -65,7 +65,7 @@ jobs:
       - name: Install LHCI CLI
         run: npm install -g @lhci/cli
 
-      - name: Run LHCI on PR branch
+      - name: Run LHCI on PR branch and compare
         run: |
           lhci autorun \
             --collect.url="http://localhost:3000/blog" 
@@ -78,4 +78,8 @@ jobs:
           --upload.outputDir="./lhci-reports/pr"
 
          node compare-lhci-reports.js
+            --config=lighthouserc.json \
+            --collect.url="http://localhost:3000/blog" \
+            --upload.outputDir="./lhci-reports/pr"
 
+          node compare-lhci-reports.js
