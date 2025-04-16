@@ -20,6 +20,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Build Next.js application
+        env:
+          WORDPRESS_API_URL: "https://wp.keploy.io/graphql"
+          NEXT_PUBLIC_WORDPRESS_API_URL: "https://wp.keploy.io/graphql"
+        run: npm run build
+
+      - name: Start Next.js app
+        env:
+          WORDPRESS_API_URL: "https://wp.keploy.io/graphql"
+          NEXT_PUBLIC_WORDPRESS_API_URL: "https://wp.keploy.io/graphql"
+        run: |
+          npm run start -- -p 4000 &
 
       - name: Install LHCI CLI
         run: npm install -g @lhci/cli
@@ -29,9 +44,14 @@ jobs:
           mkdir -p ./lhci-reports/app
           lhci autorun \
             --config=lighthouserc.json \
-            --collect.url="https://keploy.io/blog" \
+            --collect.url="http://localhost:4000/blog" \
             --upload.outputDir="./lhci-reports/app"
 
+      - name: Upload main branch LHCI report
+        uses: actions/upload-artifact@v4
+        with:
+          name: lhci-main-report
+          path: ./lhci-reports/app
 
   lighthouse-pr:
     name: Lighthouse on PR branch

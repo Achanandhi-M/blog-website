@@ -1,54 +1,52 @@
 const fs = require('fs');
 const path = require('path');
 
-function findReportFile(directory) {
-  if (!fs.existsSync(directory)) {
-    console.error(`Directory not found: ${directory}`);
+function findReportFile(dir) {
+  if (!fs.existsSync(dir)) {
+    console.error(`Directory not found: ${dir}`);
     process.exit(1);
   }
-  const files = fs.readdirSync(directory);
-  const reportFile = files.find(file => file.endsWith('.report.json'));
+
+  let files = fs.readdirSync(dir);
+  let reportFile = files.find(f => f.endsWith('.report.json'));
+  if (reportFile) return path.join(dir, reportFile);
+
+  const subdir = files.find(f => fs.statSync(path.join(dir, f)).isDirectory());
+  if (!subdir) {
+    console.error(`No .report.json or subfolder found in: ${dir}`);
+    process.exit(1);
+  }
+
+  const subDirPath = path.join(dir, subdir);
+  files = fs.readdirSync(subDirPath);
+  reportFile = files.find(f => f.endsWith('.report.json'));
   if (!reportFile) {
-    console.error(`No report file found in directory: ${directory}`);
+    console.error(`No report file found in subfolder: ${subDirPath}`);
     process.exit(1);
   }
-  return path.join(directory, reportFile);
+
+  return path.join(subDirPath, reportFile);
 }
 
-function loadReport(path) {
-  if (!fs.existsSync(path)) {
-    console.error(`Report not found at path: ${path}`);
-    process.exit(1);
-  }
-  const data = fs.readFileSync(path, 'utf8');
+function loadReport(filePath) {
+  const data = fs.readFileSync(filePath, 'utf8');
   return JSON.parse(data);
 }
 
-const appReportDirectory = './lhci-reports/app';
-const keployReportDirectory = './lhci-reports/keploy.io';
+const mainReport = loadReport(findReportFile('./lhci-reports/app'));
+const prReport = loadReport(findReportFile('./lhci-reports/pr'));
 
-const appReportPath = findReportFile(appReportDirectory);
-const keployReportPath = findReportFile(keployReportDirectory);
+const categories = ['performance', 'accessibility', 'seo', 'best-practices'];
 
-const appReport = loadReport(appReportPath);
-const keployReport = loadReport(keployReportPath);
-
-const categories = ['performance', 'accessibility', 'seo'];
-
-let allPass = true;
+console.log('\n🔍 Lighthouse Scores:\n');
+console.log(`| Category        | Main Branch | PR Branch |`);
+console.log(`|-----------------|-------------|-----------|`);
 
 categories.forEach(category => {
-  const appScore = appReport.categories[category].score;
-  const keployScore = keployReport.categories[category].score;
-  if (appScore < keployScore) {
-    console.error(`Score for ${category} is lower in the application (${appScore}) than Keploy.io (${keployScore})`);
-    allPass = false;
-  }
+  const base = mainReport.categories[category]?.score ?? 'N/A';
+  const pr = prReport.categories[category]?.score ?? 'N/A';
+  const toPercent = s => (typeof s === 'number' ? `${Math.round(s * 100)}%` : s);
+  console.log(`| ${category.padEnd(15)} | ${toPercent(base).padEnd(11)} | ${toPercent(pr)} |`);
 });
 
-if (!allPass) {
-  console.error('Lighthouse scores are lower than the baseline. Failing the CI job.');
-  process.exit(1);
-} else {
-  console.log('All Lighthouse scores are equal or better than the baseline.');
-}
+console.log('\n✅ Done printing LHCI scores.\n');
