@@ -1,4 +1,4 @@
-name: Lighthouse PR Comparison
+name: Lighthouse Pull request Comparison
 
 on: 
   pull_request: 
