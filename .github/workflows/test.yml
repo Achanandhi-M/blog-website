@@ -26,6 +26,7 @@ jobs:
 
       - name: Run LHCI on production site
         run: |
+          mkdir -p ./lhci-reports/app
           lhci autorun \
             --config=lighthouserc.json \
             --collect.url="https://keploy.io/blog" \
