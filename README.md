@@ -6,7 +6,7 @@
 
 First, you need a WordPress site. There are many solutions for WordPress hosting or you could use a Local by flywheel for setting up WordPress locally
 
-Once the site is ready, you'll need to install the [WPGraphQL](https://www.wpgraphql.com/) plugin. It will add GraphQL API to your WordPress site which we'll use to query the posts. Follow these steps to install it
+Once the site is ready, you'll need to install the [WPGraphQL](https://www.wpgraphql.com/) plugin. It will add GraphQL API to your WordPress site which we'll use to query the posts. Follow these step to install it
 
 - Download the [WPGraphQL repo](https://github.com/wp-graphql/wp-graphql) as a ZIP archive.
 - Inside your wordPress admin, go to **Plugins** and then click **Add New**.
@@ -15,7 +15,7 @@ Once the site is ready, you'll need to install the [WPGraphQL](https://www.wpgra
 
 #### GraphQL
 
-The [WPGraphQL](https://www.wpgraphql.com/) plugin also gives you access to a GraphQL IDE directly from your WordPress Admin, allowing you to inspect and play around with the GraphQL API.
+The [WPGraphQL](https://www.wpgraphql.com/) plugin also gives you access to a GraphQL IDE directly from your WordPress Admin, allowing you to inspect and play around with the GraphQL APIs.
 
 ### Step 2. Populate Content
 
@@ -23,7 +23,7 @@ Inside your WordPress admin, go to **Posts** and start adding new posts:
 
 - We recommend creating at least **2 posts**
 - Use dummy data for the content
-- Pick an author from your WordPress users
+- Pick an author from your WordPress user
 - Add a **Featured Image**. You can download one from [Unsplash](https://unsplash.com/)
 - Fill the **Excerpt** field
 
@@ -57,17 +57,17 @@ cp .env.local.example .env.local
 
 Then open .env.local and set WORDPRESS_API_URL to be the URL to your GraphQL endpoint in WordPress. For example: https://Testapp.com/graphql
 
-Your .env.local file should look like this:
+Your .env.local file should look like this
 
 ```bash
 WORDPRESS_API_URL=...
 ```
 
-### Step 6. Run Next.js in development mode
+## Step 6. Run next.js in Development mode
 ```bash
 npm run dev
 
-#or
+# or
 
 yarn dev
 ```
