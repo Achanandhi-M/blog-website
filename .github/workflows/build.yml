@@ -68,17 +68,14 @@ jobs:
       - name: Create output directory for Lighthouse
         run: mkdir -p ${{ github.workspace }}/tmp/artifacts
 
+   
       - name: Run Lighthouse audit for both PR and Main
         uses: foo-software/lighthouse-check-action@master
         with:
-          gitAuthor: ${{ github.actor }}
-          gitBranch: ${{ github.head_ref }}
-          gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
-          outputDirectory: ${{ github.workspace }}/tmp/artifacts
-          urls: 'http://localhost:3000/blog,http://localhost:3001/blog'
-          sha: ${{ github.sha }}
-      - name: Print Lighthouse Port Information
-        run: |
-            echo "🔴 Lighthouse audit for the **Main branch** is running on port 3000"
-            echo "🟢 Lighthouse audit for the **PR branch** is running on port 3001"
-            echo "Check the respective reports for comparison."
+            gitAuthor: ${{ github.actor }}
+            gitBranch: ${{ github.head_ref }}
+            gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
+            outputDirectory: ${{ github.workspace }}/tmp/artifacts
+            urls: 'http://localhost:3000/blog?branch=main,http://localhost:3001/blog?branch=pr'
+            sha: ${{ github.sha }}
+        
