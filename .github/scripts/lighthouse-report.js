@@ -35,21 +35,60 @@ const pr = extract(prReport);
 const md = `
 **🔍 Lighthouse Scores**
 
-**⚡ PR Branch (http://localhost:3001)**
-| Metric         | Score |
-|----------------|-------|
-| Performance    | ${pr.performance} |
-| Accessibility  | ${pr.accessibility} |
-| Best Practices | ${pr.bestPractices} |
-| SEO            | ${pr.seo} |
-
-**📦 Main Branch (http://localhost:3000)**
-| Metric         | Score |
-|----------------|-------|
-| Performance    | ${main.performance} |
-| Accessibility  | ${main.accessibility} |
-| Best Practices | ${main.bestPractices} |
-| SEO            | ${main.seo} |
+<table>
+  <tr>
+    <td>
+      <strong>⚡ PR Branch (http://localhost:3001)</strong>
+      <table>
+        <tr>
+          <th>Metric</th>
+          <th>Score</th>
+        </tr>
+        <tr>
+          <td>Performance</td>
+          <td>${pr.performance}</td>
+        </tr>
+        <tr>
+          <td>Accessibility</td>
+          <td>${pr.accessibility}</td>
+        </tr>
+        <tr>
+          <td>Best Practices</td>
+          <td>${pr.bestPractices}</td>
+        </tr>
+        <tr>
+          <td>SEO</td>
+          <td>${pr.seo}</td>
+        </tr>
+      </table>
+    </td>
+    <td style="padding-left: 20px;">
+      <strong>📦 Main Branch (http://localhost:3000)</strong>
+      <table>
+        <tr>
+          <th>Metric</th>
+          <th>Score</th>
+        </tr>
+        <tr>
+          <td>Performance</td>
+          <td>${main.performance}</td>
+        </tr>
+        <tr>
+          <td>Accessibility</td>
+          <td>${main.accessibility}</td>
+        </tr>
+        <tr>
+          <td>Best Practices</td>
+          <td>${main.bestPractices}</td>
+        </tr>
+        <tr>
+          <td>SEO</td>
+          <td>${main.seo}</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
 `;
 
 fs.writeFileSync('lighthouse-comment.md', md);
